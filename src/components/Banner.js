@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../api/axios';
+import styled from 'styled-components';
 
 import requests from '../api/requests';
 
@@ -21,5 +22,26 @@ export default function Banner() {
     });
     setMovie(movieDetail);
   };
-  return <div></div>;
+  return (
+    <BannerWrap
+      style={{
+        backgroundImage: `url(
+          'https://image.tmdb.org/t/p/original/${movie.backdrop_path}'
+        )`,
+      }}
+    >
+      <div>
+        <h2>{movie.title || movie.name || movie.original_name}</h2>
+        <div>
+          <button type="button">Play</button>
+          <button type="button">More Information</button>
+        </div>
+        <h3>{movie.overview}</h3>
+      </div>
+    </BannerWrap>
+  );
 }
+
+const BannerWrap = styled.header`
+  background-size: cover;
+`;
