@@ -33,8 +33,8 @@ export default function Banner() {
       <div>
         <h2>{movie.title || movie.name || movie.original_name}</h2>
         <div>
-          <button type="button">Play</button>
-          <button type="button">More Information</button>
+          <button type="button">재생</button>
+          <button type="button">상세 정보</button>
         </div>
         <h3>{movie.overview}</h3>
       </div>
@@ -43,5 +43,6 @@ export default function Banner() {
 }
 
 const BannerWrap = styled.header`
+  background-position: cetner top;
   background-size: cover;
 `;
