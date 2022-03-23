@@ -13,18 +13,20 @@ export default function Nav() {
       }
     });
 
-    // return () => {
-    //   window.addEventListener('scroll', () => {});
-    // };
+    return () => {
+      window.addEventListener('scroll', () => {});
+    };
   }, []);
 
   return (
     <NavWrap className={show && 'nav-black'}>
-      <img
-        alt="Netflix Logo"
-        src="//upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/200px-Netflix_2015_logo.svg.png"
-        onClick={window.location.reload}
-      />
+      <a href="/">
+        <img
+          alt="Netflix Logo"
+          src="//upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/200px-Netflix_2015_logo.svg.png"
+          className="nav-logo"
+        />
+      </a>
       <img
         alt="User Profile"
         src="/images/profile.png"
@@ -46,14 +48,14 @@ const NavWrap = styled.nav`
   z-index: 1;
   transition: all 0.5s ease-in;
 
+  &.nav-black {
+    background-color: rgb(20, 20, 20);
+  }
+
   img {
     margin: 0 60px;
     cursor: pointer;
     height: 30px;
-  }
-
-  &.nav-black {
-    background-color: rgb(20, 20, 20);
   }
 
   .nav-profile {
