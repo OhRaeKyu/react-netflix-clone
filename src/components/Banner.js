@@ -6,6 +6,7 @@ import requests from '../api/requests';
 
 export default function Banner() {
   const [movie, setMovie] = useState([]);
+  const [playClicked, setPlayClicked] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -23,75 +24,96 @@ export default function Banner() {
     setMovie(movieDetail);
   };
 
-  return (
-    <BannerWrap
-      style={{
-        backgroundImage: `url(
-          'https://image.tmdb.org/t/p/original/${movie.backdrop_path}'
-        )`,
-      }}
-    >
-      <MovieWrap>
-        <h2>{movie.title || movie.name || movie.original_name}</h2>
-        <h3>{movie.overview}</h3>
-        <BtnWrap>
-          <button type="button" className="btn-play">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              class="Hawkins-Icon Hawkins-Icon-Standard"
+  if (!playClicked) {
+    return (
+      <BannerWrap>
+        <div>
+          <MovieImg
+            src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
+            alt={`영화 ${movie.title}의 포스터 이미지입니다.`}
+          />
+          <BackImg />
+        </div>
+        <MovieInfo>
+          <h2>{movie.title || movie.name || movie.original_name}</h2>
+          <h3>{movie.overview}</h3>
+          <BtnWrap>
+            <button
+              type="button"
+              className="btn-play"
+              onClick={() => setPlayClicked(true)}
             >
-              <path
-                d="M4 2.69127C4 1.93067 4.81547 1.44851 5.48192 1.81506L22.4069 11.1238C23.0977 11.5037 23.0977 12.4963 22.4069 12.8762L5.48192 22.1849C4.81546 22.5515 4 22.0693 4 21.3087V2.69127Z"
-                fill="currentColor"
-              ></path>
-            </svg>
-            <span>재생</span>
-          </button>
-          <button type="button" className="btn-info">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              class="Hawkins-Icon Hawkins-Icon-Standard"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3ZM1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12ZM13 10V18H11V10H13ZM12 8.5C12.8284 8.5 13.5 7.82843 13.5 7C13.5 6.17157 12.8284 5.5 12 5.5C11.1716 5.5 10.5 6.17157 10.5 7C10.5 7.82843 11.1716 8.5 12 8.5Z"
-                fill="currentColor"
-              ></path>
-            </svg>
-            <span>상세 정보</span>
-          </button>
-        </BtnWrap>
-      </MovieWrap>
-      <FadeBottom />
-    </BannerWrap>
-  );
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 2.69127C4 1.93067 4.81547 1.44851 5.48192 1.81506L22.4069 11.1238C23.0977 11.5037 23.0977 12.4963 22.4069 12.8762L5.48192 22.1849C4.81546 22.5515 4 22.0693 4 21.3087V2.69127Z"
+                  fill="currentColor"
+                ></path>
+              </svg>
+              <span>재생</span>
+            </button>
+            <button type="button" className="btn-info">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3ZM1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12ZM13 10V18H11V10H13ZM12 8.5C12.8284 8.5 13.5 7.82843 13.5 7C13.5 6.17157 12.8284 5.5 12 5.5C11.1716 5.5 10.5 6.17157 10.5 7C10.5 7.82843 11.1716 8.5 12 8.5Z"
+                  fill="currentColor"
+                ></path>
+              </svg>
+              <span>상세 정보</span>
+            </button>
+          </BtnWrap>
+        </MovieInfo>
+      </BannerWrap>
+    );
+  } else {
+    return (
+      <PlayWrap>
+        <Iframe
+          src={`https://www.youtube.com/embed/${movie.videos.results[0].key}?controls=1&autoplay=1&loop=1&mute=1&playlist=${movie.videos.results[0].key}`}
+          title="Youtube video player"
+        ></Iframe>
+      </PlayWrap>
+    );
+  }
 }
 
 const BannerWrap = styled.header`
-  background-position: top center;
-  background-size: cover;
+  position: relative;
   color: #fff;
-  object-fit: contain;
-  height: 448px;
-
-  @media screen and (min-width: 1500px) {
-    position: relative;
-    height: 600px;
-  }
 `;
 
-const MovieWrap = styled.div`
+const MovieImg = styled.img`
+  display: block;
+  width: 100%;
+`;
+
+const BackImg = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+`;
+
+const MovieInfo = styled.div`
+  position: absolute;
+  bottom: 20%;
+  left: 0;
   margin-left: 40px;
-  padding-top: 140px;
   height: 190px;
 
   h2 {
@@ -112,7 +134,7 @@ const MovieWrap = styled.div`
     text-overflow: ellipsis;
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
   }
 
@@ -123,7 +145,7 @@ const MovieWrap = styled.div`
 
     h3 {
       font-size: 0.8rem !important;
-      width: quto !important;
+      width: auto !important;
     }
   }
 `;
@@ -177,19 +199,16 @@ const BtnWrap = styled.div`
   }
 `;
 
-const FadeBottom = styled.div`
-  height: 7.4rem;
-  background-image: linear-gradient(
-    180deg,
-    transparent,
-    rgba(37, 37, 37, 0.61),
-    #111
-  );
+const PlayWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+`;
 
-  @media screen and (min-width: 1500px) {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 20rem;
-  }
+const Iframe = styled.iframe`
+  width: 100%;
+  height: 100%;
+  border: none;
 `;

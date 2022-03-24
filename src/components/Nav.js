@@ -45,7 +45,7 @@ const NavWrap = styled.nav`
   width: 100%;
   height: 30px;
   padding: 15px 0;
-  z-index: 1;
+  z-index: 100;
   transition: all 0.5s ease-in;
 
   &.nav-black {

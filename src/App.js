@@ -1,16 +1,21 @@
 import { Reset } from 'styled-reset';
+import styled from 'styled-components';
 
 import Banner from './components/Banner';
 import Nav from './components/Nav';
 
 function App() {
   return (
-    <div className="App">
+    <AppWrap>
       <Reset />
       <Nav />
       <Banner />
-    </div>
+    </AppWrap>
   );
 }
 
 export default App;
+
+const AppWrap = styled.div`
+  background-color: rgb(20, 20, 20);
+`;
