@@ -6,6 +6,7 @@ import requests from '../api/requests';
 
 export default function Banner() {
   const [movie, setMovie] = useState([]);
+  const [video, setVideo] = useState('');
   const [playClicked, setPlayClicked] = useState(false);
 
   useEffect(() => {
@@ -22,6 +23,9 @@ export default function Banner() {
       params: { append_to_response: 'videos' },
     });
     setMovie(movieDetail);
+    if (!!!movieDetail.videos) {
+      setVideo(movieDetail.videos.results[0].key);
+    }
   };
 
   if (!playClicked) {
@@ -81,10 +85,14 @@ export default function Banner() {
   } else {
     return (
       <PlayWrap>
-        <Iframe
-          src={`https://www.youtube.com/embed/${movie.videos.results[0].key}?controls=1&autoplay=1&loop=1&mute=1&playlist=${movie.videos.results[0].key}`}
-          title="Youtube video player"
-        ></Iframe>
+        {video ? (
+          <Iframe
+            src={`https://www.youtube.com/embed/${video}?controls=1&autoplay=1&loop=1&mute=1&playlist=${video}`}
+            title="Youtube video player"
+          />
+        ) : (
+          <p>예고편 영상이 존재하지 않습니다.</p>
+        )}
       </PlayWrap>
     );
   }
@@ -92,7 +100,6 @@ export default function Banner() {
 
 const BannerWrap = styled.header`
   position: relative;
-  color: #fff;
 `;
 
 const MovieImg = styled.img`
@@ -164,9 +171,9 @@ const BtnWrap = styled.div`
     border-radius: 5px;
     padding: 0.4rem 1rem;
     margin-right: 1rem;
+    color: #fff;
 
     &:hover {
-      color: #000;
       background-color: rgba(170, 170, 170, 0.9);
       transition: all 0.2s;
     }
@@ -178,16 +185,14 @@ const BtnWrap = styled.div`
 
   .btn-play {
     background-color: white;
-    color: black;
+    color: #000;
   }
 
   .btn-info {
     background-color: rgba(109, 109, 110, 0.7);
-    color: white;
 
     &:hover {
       background-color: rgb(74, 74, 74);
-      color: white;
     }
   }
 
