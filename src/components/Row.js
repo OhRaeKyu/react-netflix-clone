@@ -12,7 +12,9 @@ export default function Row({ title, id, fetchUrl, isTopRow }) {
 
   const fetchMovieData = async () => {
     const request = await axios.get(fetchUrl);
-    setMovies(request.data.reults);
+    setMovies(
+      isTopRow ? request.data.results.slice(0, 10) : request.data.results
+    );
   };
 
   return (
@@ -26,7 +28,7 @@ export default function Row({ title, id, fetchUrl, isTopRow }) {
               src={`https://image.tmdb.org/t/p/original/${
                 isTopRow ? movie.poster_path : movie.backdrop_path
               }`}
-              alt={`영화 ${movie.name}의 포스터 이미지입니다.`}
+              alt={`영화 ${movie.title}의 포스터 이미지입니다.`}
               isTopRow={isTopRow}
             />
           ))}
@@ -42,13 +44,19 @@ export default function Row({ title, id, fetchUrl, isTopRow }) {
   );
 }
 
-const RowWrap = styled.div``;
+const RowWrap = styled.section``;
 
-const Container = styled.div``;
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const Item = styled.div``;
 
-const MovieImg = styled.img``;
+const MovieImg = styled.img`
+  height: ${(props) => (props.isTopRow ? '160px' : '125px')};
+`;
 
 const SliderLeft = styled.div`
   width: 20px;
@@ -62,17 +70,21 @@ const SliderLeft = styled.div`
     border-bottom: 2px solid #fff;
     border-left: 2px solid #fff;
     transform: rotate(45deg);
+    transition: all 0.3s;
   }
 
   &:hover {
     span {
-      border-width: 4px;
+      transform: rotate(45deg) scale(1.3);
     }
   }
 `;
 
 const SliderRight = styled(SliderLeft)`
   span {
-    transform: rotate(225deg);
+    border-bottom: none;
+    border-left: none;
+    border-top: 2px solid #fff;
+    border-right: 2px solid #fff;
   }
 `;
