@@ -19,72 +19,121 @@ export default function Row({ title, id, fetchUrl, isTopRow }) {
 
   return (
     <RowWrap>
-      <h2>{title}</h2>
+      <Title>{title}</Title>
       <Container>
         <Item id={id}>
-          {movies.map((movie) => (
-            <MovieImg
-              key={movie.id}
-              src={`https://image.tmdb.org/t/p/original/${
-                isTopRow ? movie.poster_path : movie.backdrop_path
-              }`}
-              alt={`영화 ${movie.title}의 포스터 이미지입니다.`}
-              isTopRow={isTopRow}
-            />
+          {movies.map((movie, index) => (
+            <li>
+              {isTopRow ? <p>{index + 1}</p> : <></>}
+              <MovieImg
+                key={movie.id}
+                src={`https://image.tmdb.org/t/p/original/${
+                  isTopRow ? movie.poster_path : movie.backdrop_path
+                }`}
+                alt={`영화 ${movie.title}의 포스터 이미지입니다.`}
+                isTopRow={isTopRow}
+              />
+            </li>
           ))}
         </Item>
-        <SliderLeft>
-          <span></span>
+        <SliderLeft className="arrow">
+          <span>{'<'}</span>
         </SliderLeft>
-        <SliderRight>
-          <span></span>
+        <SliderRight className="arrow">
+          <span>{'>'}</span>
         </SliderRight>
       </Container>
     </RowWrap>
   );
 }
 
-const RowWrap = styled.section``;
+const RowWrap = styled.section`
+  margin-top: 20px;
 
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Item = styled.div``;
-
-const MovieImg = styled.img`
-  height: ${(props) => (props.isTopRow ? '160px' : '125px')};
-`;
-
-const SliderLeft = styled.div`
-  width: 20px;
-  height: 40px;
-  background-color: rgba(20, 20, 20, 0.7);
-
-  span {
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    border-bottom: 2px solid #fff;
-    border-left: 2px solid #fff;
-    transform: rotate(45deg);
-    transition: all 0.3s;
+  &:hover .arrow {
+    background-color: rgba(20, 20, 20, 0.7);
+    transition: background-color 0.5s;
   }
 
-  &:hover {
-    span {
-      transform: rotate(45deg) scale(1.3);
+  &:hover .arrow span {
+    display: inline-block;
+  }
+`;
+
+const Title = styled.h2`
+  margin-left: 40px;
+`;
+
+const Container = styled.div`
+  position: relative;
+`;
+
+const Item = styled.ul`
+  display: flex;
+  align-items: center;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  padding: 20px 40px;
+  scroll-behavior: smooth;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  li + li {
+    margin-left: 5px;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+
+    p {
+      font-family: 'GmarketSansBold';
+      font-size: 160px;
+      color: #000;
+      text-shadow: 0 0 2px #fff;
+      opacity: 0.5;
     }
   }
 `;
 
-const SliderRight = styled(SliderLeft)`
-  span {
-    border-bottom: none;
-    border-left: none;
-    border-top: 2px solid #fff;
-    border-right: 2px solid #fff;
+const MovieImg = styled.img`
+  max-height: ${(props) => (props.isTopRow ? '160px' : '125px')};
+  object-fit: contain;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.3s;
+
+  &:hover {
+    transform: scale(1.3);
   }
+`;
+
+const SliderRight = styled.div`
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    display: none;
+    transition: transform 0.3s;
+    font-size: 1.5rem;
+  }
+
+  &:hover {
+    span {
+      transform: scale(1.3);
+    }
+  }
+`;
+
+const SliderLeft = styled(SliderRight)`
+  left: 0;
 `;
