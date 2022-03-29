@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 import axios from '../api/axios';
 
 export default function Row({ title, id, fetchUrl, isTopRow }) {
   const [movies, setMovies] = useState([]);
+  const scrollDiv = useRef(null);
 
   useEffect(() => {
     fetchMovieData();
@@ -17,10 +18,18 @@ export default function Row({ title, id, fetchUrl, isTopRow }) {
     );
   };
 
+  const scrollLeft = () => {
+    document.getElementById(id).scrollLeft -= window.innerWidth - 80;
+  };
+
+  const scrollRight = () => {
+    document.getElementById(id).scrollLeft += window.innerWidth - 80;
+  };
+
   return (
     <RowWrap>
       <Title>{title}</Title>
-      <Container>
+      <Container ref={scrollDiv}>
         <Item id={id}>
           {movies.map((movie, index) => (
             <li>
@@ -36,10 +45,10 @@ export default function Row({ title, id, fetchUrl, isTopRow }) {
             </li>
           ))}
         </Item>
-        <SliderLeft className="arrow">
+        <SliderLeft className="arrow" onClick={scrollLeft}>
           <span>{'<'}</span>
         </SliderLeft>
-        <SliderRight className="arrow">
+        <SliderRight className="arrow" onClick={scrollRight}>
           <span>{'>'}</span>
         </SliderRight>
       </Container>
