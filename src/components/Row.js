@@ -18,24 +18,25 @@ export default function Row({ title, id, fetchUrl, isTopRow }) {
     );
   };
 
-  const scrollLeft = () => {
-    document.getElementById(id).scrollLeft -= window.innerWidth - 80;
+  const scrollLeft = (e) => {
+    e.preventDefault();
+    scrollDiv.current.scrollLeft -= window.innerWidth - 80;
   };
 
-  const scrollRight = () => {
-    document.getElementById(id).scrollLeft += window.innerWidth - 80;
+  const scrollRight = (e) => {
+    e.preventDefault();
+    scrollDiv.current.scrollLeft += window.innerWidth - 80;
   };
 
   return (
     <RowWrap>
       <Title>{title}</Title>
-      <Container ref={scrollDiv}>
-        <Item id={id}>
+      <Container>
+        <Item id={id} ref={scrollDiv}>
           {movies.map((movie, index) => (
-            <li>
+            <li key={movie.id}>
               {isTopRow ? <p>{index + 1}</p> : <></>}
               <MovieImg
-                key={movie.id}
                 src={`https://image.tmdb.org/t/p/original/${
                   isTopRow ? movie.poster_path : movie.backdrop_path
                 }`}
@@ -78,6 +79,7 @@ const Container = styled.div`
 `;
 
 const Item = styled.ul`
+  cursor: pointer;
   display: flex;
   align-items: center;
   overflow-y: hidden;
@@ -101,7 +103,7 @@ const Item = styled.ul`
       font-family: 'GmarketSansBold';
       font-size: 160px;
       color: #000;
-      text-shadow: 0 0 2px #fff;
+      text-shadow: 0 0 5px #fff;
       opacity: 0.5;
     }
   }
@@ -110,7 +112,6 @@ const Item = styled.ul`
 const MovieImg = styled.img`
   max-height: ${(props) => (props.isTopRow ? '160px' : '125px')};
   object-fit: contain;
-  cursor: pointer;
   border-radius: 3px;
   transition: all 0.3s;
 
