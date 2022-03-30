@@ -1,10 +1,12 @@
 import { Reset } from 'styled-reset';
 import styled from 'styled-components';
 
+import requests from './api/requests';
+
 import Banner from './components/Banner';
 import Nav from './components/Nav';
 import Row from './components/Row';
-import requests from './api/requests';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -12,24 +14,19 @@ function App() {
       <Reset />
       <Nav />
       <Banner />
-      <Row
-        title="TOP 10 콘텐츠"
-        id="TR"
-        fetchUrl={requests.fetchTopRated}
-        isTopRow
-      />
-      <Row title="지금 뜨는 콘텐츠" id="TN" fetchUrl={requests.fetchTrending} />
-      <Row
-        title="넷플릭스 시리즈"
-        id="NO"
-        fetchUrl={requests.fetchNetflixOriginals}
-      />
-      <Row
-        title="코미디 시리즈"
-        id="CM"
-        fetchUrl={requests.fetchComedyMovies}
-      />
-      <Row title="액션 시리즈" id="AM" fetchUrl={requests.fetchActionMovies} />
+      <RowContainer>
+        <Row title="TOP 10 콘텐츠" fetchUrl={requests.fetchTopRated} isTopRow />
+        <Row title="지금 뜨는 콘텐츠" fetchUrl={requests.fetchTrending} />
+        <Row
+          title="넷플릭스 시리즈"
+          fetchUrl={requests.fetchNetflixOriginals}
+        />
+        <Row title="코미디 시리즈" fetchUrl={requests.fetchComedyMovies} />
+        <Row title="액션 시리즈" fetchUrl={requests.fetchActionMovies} />
+        <Row title="로맨스 시리즈" fetchUrl={requests.fetchRomanceMovies} />
+        <Row title="호러 시리즈" fetchUrl={requests.fetchHorrorMovies} />
+      </RowContainer>
+      <Footer />
     </AppWrap>
   );
 }
@@ -57,3 +54,5 @@ const AppWrap = styled.div`
   font-family: 'GmarketSansMedium';
   color: #fff;
 `;
+
+const RowContainer = styled.main``;

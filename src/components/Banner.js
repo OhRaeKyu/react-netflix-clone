@@ -23,7 +23,7 @@ export default function Banner() {
       params: { append_to_response: 'videos' },
     });
     setMovie(movieDetail);
-    if (!!!movieDetail.videos) {
+    if (movieDetail.videos.results.length > 0) {
       setVideo(movieDetail.videos.results[0].key);
     }
   };

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import axios from '../api/axios';
 
-export default function Row({ title, id, fetchUrl, isTopRow }) {
+export default function Row({ title, fetchUrl, isTopRow }) {
   const [movies, setMovies] = useState([]);
   const scrollDiv = useRef(null);
 
@@ -29,10 +29,10 @@ export default function Row({ title, id, fetchUrl, isTopRow }) {
   };
 
   return (
-    <RowWrap>
+    <RowWrap isTopRow={isTopRow}>
       <Title>{title}</Title>
       <Container>
-        <Item id={id} ref={scrollDiv}>
+        <Item ref={scrollDiv}>
           {movies.map((movie, index) => (
             <li key={movie.id}>
               {isTopRow ? <p>{index + 1}</p> : <></>}
@@ -58,6 +58,7 @@ export default function Row({ title, id, fetchUrl, isTopRow }) {
 }
 
 const RowWrap = styled.section`
+  // margin-top: ${(props) => (props.isTopRow ? '-20px' : '20px')};
   margin-top: 20px;
 
   &:hover .arrow {
