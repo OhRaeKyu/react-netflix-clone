@@ -2,10 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 import axios from '../api/axios';
+import MovieModal from './MovieModal';
 
 export default function Row({ title, fetchUrl, isTopRow }) {
-  const [movies, setMovies] = useState([]);
   const scrollDiv = useRef(null);
+  const [movies, setMovies] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState();
 
   useEffect(() => {
     fetchMovieData();
@@ -28,6 +31,10 @@ export default function Row({ title, fetchUrl, isTopRow }) {
     scrollDiv.current.scrollLeft += window.innerWidth - 80;
   };
 
+  const handleModal = (movie) => {
+    setModalOpen(true);
+  };
+
   return (
     <RowWrap isTopRow={isTopRow}>
       <Title>{title}</Title>
@@ -41,6 +48,7 @@ export default function Row({ title, fetchUrl, isTopRow }) {
                   isTopRow ? movie.poster_path : movie.backdrop_path
                 }`}
                 alt={`영화 ${movie.title}의 포스터 이미지입니다.`}
+                onClick={() => handleModal(movie.id)}
                 isTopRow={isTopRow}
               />
             </li>
@@ -53,6 +61,9 @@ export default function Row({ title, fetchUrl, isTopRow }) {
           <span>{'>'}</span>
         </SliderRight>
       </Container>
+      {modalOpen && (
+        <MovieModal {...selectedMovie} setModalOpen={setModalOpen} />
+      )}
     </RowWrap>
   );
 }
