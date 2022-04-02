@@ -33,6 +33,7 @@ export default function Row({ title, fetchUrl, isTopRow }) {
 
   const handleModal = (movie) => {
     setModalOpen(true);
+    setSelectedMovie(movie);
   };
 
   return (
@@ -48,7 +49,7 @@ export default function Row({ title, fetchUrl, isTopRow }) {
                   isTopRow ? movie.poster_path : movie.backdrop_path
                 }`}
                 alt={`영화 ${movie.title}의 포스터 이미지입니다.`}
-                onClick={() => handleModal(movie.id)}
+                onClick={() => handleModal(movie)}
                 isTopRow={isTopRow}
               />
             </li>
@@ -69,7 +70,7 @@ export default function Row({ title, fetchUrl, isTopRow }) {
 }
 
 const RowWrap = styled.section`
-  // margin-top: ${(props) => (props.isTopRow ? '-20px' : '20px')};
+  position: relative;
   margin-top: 20px;
 
   &:hover .arrow {
