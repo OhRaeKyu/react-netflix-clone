@@ -1,6 +1,6 @@
 const today = new Date();
 const year = today.getFullYear();
-const lastMonth = ('0' + today.getMonth()).slice(-2);
+const lastMonth = ('0' + (today.getMonth() - 1)).slice(-2);
 
 const requests = {
   fetchNowPlaying: 'movie/now_playing',

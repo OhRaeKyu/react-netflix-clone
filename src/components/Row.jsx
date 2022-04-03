@@ -70,7 +70,6 @@ export default function Row({ title, fetchUrl, isTopRow }) {
 }
 
 const RowWrap = styled.section`
-  position: relative;
   margin-top: 20px;
 
   &:hover .arrow {
