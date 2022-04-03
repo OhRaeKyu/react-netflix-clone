@@ -42,14 +42,13 @@ export default function Row({ title, fetchUrl, isTopRow }) {
       <Container>
         <Item ref={scrollDiv}>
           {movies.map((movie, index) => (
-            <li key={movie.id}>
+            <li key={movie.id} onClick={() => handleModal(movie)}>
               {isTopRow ? <p>{index + 1}</p> : <></>}
               <MovieImg
                 src={`https://image.tmdb.org/t/p/original/${
                   isTopRow ? movie.poster_path : movie.backdrop_path
                 }`}
                 alt={`영화 ${movie.title}의 포스터 이미지입니다.`}
-                onClick={() => handleModal(movie)}
                 isTopRow={isTopRow}
               />
             </li>
@@ -111,6 +110,10 @@ const Item = styled.ul`
     display: flex;
     align-items: center;
 
+    &:hover img {
+      transform: scale(1.3);
+    }
+
     p {
       font-family: 'GmarketSansBold';
       font-size: 160px;
@@ -126,10 +129,6 @@ const MovieImg = styled.img`
   object-fit: contain;
   border-radius: 3px;
   transition: all 0.3s;
-
-  &:hover {
-    transform: scale(1.3);
-  }
 `;
 
 const SliderRight = styled.div`
