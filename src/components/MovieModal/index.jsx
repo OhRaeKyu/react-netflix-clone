@@ -12,37 +12,31 @@ export default function MovieModal({
   setModalOpen,
 }) {
   return (
-    <Presentation>
-      <ModalWrap>
-        <Modal>
-          <CloseBtn onClick={() => setModalOpen(false)}>X</CloseBtn>
+    <ModalWrap>
+      <Modal>
+        <CloseBtn onClick={() => setModalOpen(false)}>X</CloseBtn>
 
-          <MoviePosterImg
-            className="modal__poster-img"
-            src={`https://image.tmdb.org/t/p/original/${backdrop_path}`}
-            alt={`영화 ${title}의 포스터 이미지입니다.`}
-          />
+        <MoviePosterImg
+          className="modal__poster-img"
+          src={`https://image.tmdb.org/t/p/original/${backdrop_path}`}
+          alt={`영화 ${title}의 포스터 이미지입니다.`}
+        />
 
-          <MovieContent>
-            <MovieRelease>
-              <span>100% 일치</span>
-              {release_date ? release_date : first_air_date}
-            </MovieRelease>
+        <MovieContent>
+          <MovieRelease>
+            <span>100% 일치 </span>
+            {release_date ? release_date : first_air_date}
+          </MovieRelease>
 
-            <MovieTitle>{title ? title : name}</MovieTitle>
-            <MovieAverage> 평점: {vote_average}</MovieAverage>
-            <MovieOverview> {overview}</MovieOverview>
-          </MovieContent>
-        </Modal>
-      </ModalWrap>
+          <MovieTitle>{title ? title : name}</MovieTitle>
+          <MovieAverage> 평점: {vote_average}</MovieAverage>
+          <MovieOverview> {overview}</MovieOverview>
+        </MovieContent>
+      </Modal>
       <Background onClick={() => setModalOpen(false)} />
-    </Presentation>
+    </ModalWrap>
   );
 }
-const Presentation = styled.div`
-  z-index: 1200;
-  position: absolute;
-`;
 
 const ModalWrap = styled.div`
   position: fixed;
@@ -51,6 +45,7 @@ const ModalWrap = styled.div`
   -webkit-tap-highlight-color: transparent;
   display: flex;
   justify-content: center;
+  z-index: 9999;
 
   @media screen and (max-height: 769px) {
     align-items: unset;

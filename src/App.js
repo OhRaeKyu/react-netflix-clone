@@ -1,17 +1,21 @@
 import { Reset } from 'styled-reset';
-import styled from 'styled-components';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import requests from './api/requests';
 
-import Banner from './components/Banner';
-import Nav from './components/Nav';
-import Row from './components/Row';
-import Footer from './components/Footer';
+import MainPage from './pages/MainPage';
+import SearchPage from './pages/SearchPage';
+import DetailPage from './pages/DetailPage';
 
 function App() {
   return (
-    <AppWrap>
+    <BrowserRouter>
       <Reset />
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/detail/:movieId" element={<DetailPage />} />
+      </Routes>
       <Nav />
       <Banner />
       <RowContainer>
@@ -27,32 +31,8 @@ function App() {
         <Row title="호러 시리즈" fetchUrl={requests.fetchHorrorMovies} />
       </RowContainer>
       <Footer />
-    </AppWrap>
+    </BrowserRouter>
   );
 }
 
 export default App;
-
-const AppWrap = styled.div`
-  @font-face {
-    font-family: 'GmarketSansMedium';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff')
-      format('woff');
-    font-weight: normal;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'GmarketSansBold';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff')
-      format('woff');
-    font-weight: normal;
-    font-style: normal;
-  }
-
-  background-color: rgb(20, 20, 20);
-  font-family: 'GmarketSansMedium';
-  color: #fff;
-`;
-
-const RowContainer = styled.main``;
