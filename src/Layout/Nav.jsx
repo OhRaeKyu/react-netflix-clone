@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Nav() {
   const [show, setShow] = useState(false);
   const [seacrhClicked, setSeacrhClicked] = useState(false);
   const [seacrhValue, setSeacrhValue] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.addEventListener('scroll', () => {
@@ -24,6 +25,7 @@ export default function Nav() {
   const handleChange = (e) => {
     e.preventDefault();
     setSeacrhValue(e.value);
+    navigate(`/search?q=${e.target.value}`);
   };
 
   return (
@@ -35,14 +37,14 @@ export default function Nav() {
           src="//upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/200px-Netflix_2015_logo.svg.png"
         />
       </Link>
-      <SearchWrap className={seacrhClicked && 'clicked'}>
+      <SearchWrap>
         <SearchBtn onClick={() => setSeacrhClicked(!seacrhClicked)} />
         <SearchInput
-          value={seacrhValue}
           type="text"
+          value={seacrhValue}
           onChange={handleChange}
           placeholder="영화를 검색하세요."
-          className={(show && 'nav-black') || (seacrhClicked && 'clicked')}
+          className={`${show && 'nav-black '} ${seacrhClicked && 'clicked'}`}
         />
       </SearchWrap>
       <ProfileImg alt="User Profile" src="/images/profile.png" />
@@ -80,14 +82,10 @@ const ProfileImg = styled(LogoImg)`
 const SearchWrap = styled.div`
   position: absolute;
   left: 50%;
-  transform: translateX(calc(-50% + 155px));
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
   transition: all 0.5s ease-out;
-
-  &.clicked {
-    transform: translateX(-50%);
-  }
 `;
 
 const SearchBtn = styled.button`
@@ -100,24 +98,23 @@ const SearchBtn = styled.button`
 `;
 
 const SearchInput = styled.input`
-  width: 300px;
+  width: 0;
   height: 30px;
-  margin-left: 10px;
   padding: 0;
   border: none;
   border-radius: 5px;
   text-align: center;
   color: #fff;
-  background-color: inherit;
-  opacity: 0;
-  transition: opacity 0.5s ease-in;
+  background-color: rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease-in;
 
   &.nav-black {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(255, 255, 255, 0.2);
   }
 
   &.clicked {
-    opacity: 1;
+    margin-left: 10px;
+    width: 300px;
   }
 
   &::placeholder {

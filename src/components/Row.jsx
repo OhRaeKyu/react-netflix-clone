@@ -15,9 +15,9 @@ export default function Row({ title, fetchUrl, isTopRow }) {
   }, []);
 
   const fetchMovieData = async () => {
-    const request = await axios.get(fetchUrl);
+    const response = await axios.get(fetchUrl);
     setMovies(
-      isTopRow ? request.data.results.slice(0, 10) : request.data.results
+      isTopRow ? response.data.results.slice(0, 10) : response.data.results
     );
   };
 
@@ -44,13 +44,15 @@ export default function Row({ title, fetchUrl, isTopRow }) {
           {movies.map((movie, index) => (
             <li key={movie.id} onClick={() => handleModal(movie)}>
               {isTopRow ? <p>{index + 1}</p> : <></>}
-              <MovieImg
-                src={`https://image.tmdb.org/t/p/original/${
-                  isTopRow ? movie.poster_path : movie.backdrop_path
-                }`}
-                alt={`영화 ${movie.title}의 포스터 이미지입니다.`}
-                isTopRow={isTopRow}
-              />
+              {movie.backdrop_path !== null && (
+                <MovieImg
+                  src={`https://image.tmdb.org/t/p/original/${
+                    isTopRow ? movie.poster_path : movie.backdrop_path
+                  }`}
+                  alt={`영화 ${movie.title}의 포스터 이미지입니다.`}
+                  isTopRow={isTopRow}
+                />
+              )}
             </li>
           ))}
         </Item>
