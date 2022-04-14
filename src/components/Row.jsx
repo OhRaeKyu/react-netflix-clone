@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 
 import axios from '../api/axios';
@@ -10,16 +10,16 @@ export default function Row({ title, fetchUrl, isTopRow }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState();
 
-  useEffect(() => {
-    fetchMovieData();
-  }, []);
-
-  const fetchMovieData = async () => {
+  const fetchMovieData = useCallback(async () => {
     const response = await axios.get(fetchUrl);
     setMovies(
       isTopRow ? response.data.results.slice(0, 10) : response.data.results
     );
-  };
+  }, [fetchUrl, isTopRow]);
+
+  useEffect(() => {
+    fetchMovieData();
+  }, [fetchMovieData]);
 
   const scrollLeft = (e) => {
     e.preventDefault();

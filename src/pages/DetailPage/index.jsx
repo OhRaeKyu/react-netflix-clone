@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -8,14 +8,14 @@ export default function DetailPage() {
   const { movieId } = useParams();
   const [movie, setMovie] = useState({});
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     const response = await axios.get(`/movie/${movieId}`);
     setMovie(response.data);
-  };
+  }, [movieId]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   return movie ? (
     <MovieWrap>
