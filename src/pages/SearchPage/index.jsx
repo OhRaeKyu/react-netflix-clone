@@ -29,25 +29,29 @@ export default function SearchPage() {
     }
   };
 
+  const MovieComponent = ({ movie }) => {
+    if (movie.backdrop_path !== null && movie.media_type !== 'person') {
+      const movieImageUrl = `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`;
+      return (
+        <li>
+          <Link to={`/${movie.id}`}>
+            <MoviePosterImg
+              src={movieImageUrl}
+              alt={`영화 ${movie.title}의 포스터 이미지입니다.`}
+              className="movie__poster"
+            />
+          </Link>
+        </li>
+      );
+    }
+  };
+
   return searchResults.length > 0 ? (
     <SearchWrap>
       <ul>
-        {searchResults.map((movie) => {
-          if (movie.backdrop_path !== null && movie.media_type !== 'person') {
-            const movieImageUrl = `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`;
-            return (
-              <li key={movie.id}>
-                <Link to={`/${movie.id}`}>
-                  <MoviePosterImg
-                    src={movieImageUrl}
-                    alt={`영화 ${movie.title}의 포스터 이미지입니다.`}
-                    className="movie__poster"
-                  />
-                </Link>
-              </li>
-            );
-          }
-        })}
+        {searchResults.map((movie) => (
+          <MovieComponent movie={movie} key={movie.id} />
+        ))}
       </ul>
     </SearchWrap>
   ) : (

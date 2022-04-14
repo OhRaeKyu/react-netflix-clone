@@ -10,12 +10,11 @@ export default function DetailPage() {
 
   useEffect(() => {
     fetchData();
-  }, [movieId]);
+  }, []);
 
   const fetchData = async () => {
     const response = await axios.get(`/movie/${movieId}`);
     setMovie(response.data);
-    console.log(response.data);
   };
 
   return movie ? (
