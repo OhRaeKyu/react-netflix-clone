@@ -12,7 +12,7 @@ export default function SearchPage() {
     return new URLSearchParams(useLocation().search);
   };
   let query = useQuery();
-  const searchTerm = useDebounce(query.get('q'), 300);
+  const searchTerm = useDebounce(query.get('q'), 500);
 
   useEffect(() => {
     searchTerm && fetchSearchMovie(searchTerm);
@@ -30,7 +30,7 @@ export default function SearchPage() {
   };
 
   const MovieComponent = ({ movie }) => {
-    if (movie.backdrop_path !== null && movie.media_type !== 'person') {
+    if (movie.backdrop_path !== null) {
       const movieImageUrl = `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`;
       return (
         <li>
@@ -38,11 +38,12 @@ export default function SearchPage() {
             <MoviePosterImg
               src={movieImageUrl}
               alt={`영화 ${movie.title}의 포스터 이미지입니다.`}
-              className="movie__poster"
             />
           </Link>
         </li>
       );
+    } else {
+      return <></>;
     }
   };
 
@@ -75,6 +76,18 @@ const SearchWrap = styled.section`
 const MoviePosterImg = styled.img`
   cursor: pointer;
   width: 100%;
+  border-radius: 0.2vw;
+  transition: all 0.3s;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+`;
+
+const MovieDummy = styled.li`
+  cursor: pointer;
+  max-width: 500px;
+  max-height: 280px;
   border-radius: 0.2vw;
   transition: all 0.3s;
 

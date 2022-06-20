@@ -65,7 +65,7 @@ const FooterWrap = styled.footer`
 `;
 
 const FooterContent = styled.div`
-  width: 1000px;
+  max-width: 1000px;
 
   @media (max-width: 769px) {
     width: 100%;

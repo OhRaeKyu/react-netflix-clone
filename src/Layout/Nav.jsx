@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 export default function Nav() {
   const [show, setShow] = useState(false);
   const [seacrhClicked, setSeacrhClicked] = useState(false);
   const [seacrhValue, setSeacrhValue] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     window.addEventListener('scroll', () => {
@@ -22,27 +23,34 @@ export default function Nav() {
     };
   }, []);
 
-  const handleChange = (e) => {
+  const handleClickLogo = (e) => {
+    location.pathname === '/' && window.location.reload();
+  };
+
+  const handleInputChange = (e) => {
     e.preventDefault();
-    setSeacrhValue(e.value);
+    setSeacrhValue(e.target.value);
     navigate(`/search?q=${e.target.value}`);
   };
 
   return (
     <NavWrap className={show && 'nav-black'}>
-      <Link to="/">
-        <h1 className="blind">Netflix</h1>
-        <LogoImg
-          alt="Netflix Logo"
-          src="//upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/200px-Netflix_2015_logo.svg.png"
-        />
-      </Link>
+      <h1>
+        <span className="blind">Netflix</span>
+        <Link to="/">
+          <LogoImg
+            alt="Netflix Logo"
+            src="//upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/200px-Netflix_2015_logo.svg.png"
+            onClick={handleClickLogo}
+          />
+        </Link>
+      </h1>
       <SearchWrap>
         <SearchBtn onClick={() => setSeacrhClicked(!seacrhClicked)} />
         <SearchInput
           type="text"
-          value={seacrhValue}
-          onChange={handleChange}
+          value={'' || seacrhValue}
+          onChange={handleInputChange}
           placeholder="영화를 검색하세요."
           className={`${show && 'nav-black '} ${seacrhClicked && 'clicked'}`}
         />
