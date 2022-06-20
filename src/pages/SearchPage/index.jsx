@@ -84,18 +84,6 @@ const MoviePosterImg = styled.img`
   }
 `;
 
-const MovieDummy = styled.li`
-  cursor: pointer;
-  max-width: 500px;
-  max-height: 280px;
-  border-radius: 0.2vw;
-  transition: all 0.3s;
-
-  &:hover {
-    transform: scale(1.2);
-  }
-`;
-
 const NoResultWrap = styled.section`
   display: flex;
   justify-content: center;
