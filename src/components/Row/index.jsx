@@ -11,10 +11,9 @@ export default function Row({ title, fetchUrl, isTopRow }) {
   const [selectedMovie, setSelectedMovie] = useState();
 
   const fetchMovieData = useCallback(async () => {
-    const response = await axios.get(fetchUrl);
-    setMovies(
-      isTopRow ? response.data.results.slice(0, 10) : response.data.results
-    );
+    await axios.get(fetchUrl).then((res) => {
+      setMovies(isTopRow ? res.data.results.slice(0, 10) : res.data.results);
+    });
   }, [fetchUrl, isTopRow]);
 
   useEffect(() => {
@@ -36,27 +35,29 @@ export default function Row({ title, fetchUrl, isTopRow }) {
     setSelectedMovie(movie);
   };
 
+  const renderMovies = movies.map((movie, index) => {
+    const imgSrc = `https://image.tmdb.org/t/p/original/${
+      isTopRow ? movie.poster_path : movie.backdrop_path
+    }`;
+
+    return (
+      <li key={movie.id} onClick={() => handleModal(movie)}>
+        {isTopRow && <p>{index + 1}</p>}
+        <MovieImg
+          src={imgSrc}
+          alt={`영화 ${movie.title}의 포스터 이미지입니다.`}
+          isTopRow={isTopRow}
+        />
+      </li>
+    );
+  });
+
   return (
     movies && (
       <RowWrap isTopRow={isTopRow}>
         <Title>{title}</Title>
         <Container>
-          <Item ref={scrollDiv}>
-            {movies.map((movie, index) => (
-              <li key={movie.id} onClick={() => handleModal(movie)}>
-                {isTopRow ? <p>{index + 1}</p> : <></>}
-                {movie.backdrop_path !== null && (
-                  <MovieImg
-                    src={`https://image.tmdb.org/t/p/original/${
-                      isTopRow ? movie.poster_path : movie.backdrop_path
-                    }`}
-                    alt={`영화 ${movie.title}의 포스터 이미지입니다.`}
-                    isTopRow={isTopRow}
-                  />
-                )}
-              </li>
-            ))}
-          </Item>
+          <Item ref={scrollDiv}>{renderMovies}</Item>
           <SliderLeft className="arrow" onClick={scrollLeft}>
             <span>{'<'}</span>
           </SliderLeft>

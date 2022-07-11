@@ -11,26 +11,35 @@ export default function Banner() {
   const [video, setVideo] = useState('');
   const [playClicked, setPlayClicked] = useState(false);
 
+  const fetchData = async () => {
+    let movieId = 0;
+
+    await axios
+      .get(requests.fetchNowPlaying)
+      .then((res) => {
+        movieId =
+          res.data.results[Math.floor(Math.random() * res.data.results.length)]
+            .id;
+      })
+      .catch((err) => console.log(err));
+
+    await axios
+      .get(`movie/${movieId}`, {
+        params: { append_to_response: 'videos' },
+      })
+      .then((res) => {
+        setMovie(res.data);
+        setLoading(false);
+        if (res.data.videos.results.length > 0) {
+          setVideo(res.data.videos.results[0].key);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
-
-  const fetchData = async () => {
-    const response = await axios.get(requests.fetchNowPlaying);
-    const movieId =
-      response.data.results[
-        Math.floor(Math.random() * response.data.results.length)
-      ].id;
-
-    const { data: movieDetail } = await axios.get(`movie/${movieId}`, {
-      params: { append_to_response: 'videos' },
-    });
-    setLoading(false);
-    setMovie(movieDetail);
-    if (movieDetail.videos.results.length > 0) {
-      setVideo(movieDetail.videos.results[0].key);
-    }
-  };
 
   if (!playClicked) {
     if (!!loading) {
@@ -93,7 +102,7 @@ export default function Banner() {
   } else {
     return (
       <PlayWrap>
-        {video ? (
+        {!!video ? (
           <Iframe
             src={`https://www.youtube.com/embed/${video}?controls=1&autoplay=1&loop=1&mute=1&playlist=${video}`}
             title="Youtube video player"

@@ -9,8 +9,10 @@ export default function DetailPage() {
   const [movie, setMovie] = useState({});
 
   const fetchData = useCallback(async () => {
-    const response = await axios.get(`/movie/${movieId}`);
-    setMovie(response.data);
+    await axios
+      .get(`/movie/${movieId}`)
+      .then((res) => setMovie(res.data))
+      .catch((err) => console.log(err));
   }, [movieId]);
 
   useEffect(() => {

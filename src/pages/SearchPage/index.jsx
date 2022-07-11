@@ -19,18 +19,14 @@ export default function SearchPage() {
   }, [searchTerm]);
 
   const fetchSearchMovie = async (searchTerm) => {
-    try {
-      const response = await axios.get(
-        `search/movie?include_adult=false&query=${searchTerm}`
-      );
-      setSearchResults(response.data.results);
-    } catch (err) {
-      console.log(err);
-    }
+    await axios
+      .get(`search/movie?include_adult=false&query=${searchTerm}`)
+      .then((res) => setSearchResults(res.data.results))
+      .catch((err) => console.log(err));
   };
 
   const MovieComponent = ({ movie }) => {
-    if (movie.backdrop_path !== null) {
+    if (!!movie.backdrop_path) {
       const movieImageUrl = `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`;
       return (
         <li>
